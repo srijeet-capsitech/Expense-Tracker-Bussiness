@@ -127,6 +127,7 @@ const Login: React.FC = () => {
 
             <Form.Item>
               <Button
+              onClick={()=>navigate("/:id")}
                 type="primary"
                 htmlType="submit"
                 block

@@ -1,8 +1,8 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Siderr from "./components/Siderr";
 import CreateUserForm from "./components/CreateUserForm";
-import Signup from "./components/Register/Signup";
-import Login from "./components/Login/Login";
+import Signup from "./pages/Signup/Signup";
+import Login from "./pages/Login/Login";
 
 const App = () => {
   return (

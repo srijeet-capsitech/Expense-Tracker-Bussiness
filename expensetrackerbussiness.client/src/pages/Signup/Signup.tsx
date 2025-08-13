@@ -172,9 +172,9 @@ const Signup: React.FC = () => {
                 rules={[
                   { required: true, message: "Please enter a Password" },
                   {
-                    pattern: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_]).{8,10}$/,
+                    pattern: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_]).{8,15}$/,
                     message:
-                      "Must contain at least one number, one uppercase and lowercase letter, one special character, and be at least 8 to 10 characters",
+                      "Must contain at least one number, one uppercase and lowercase letter, one special character, and be at least 8 to 15 characters",
                   },
                 ]}
                 hasFeedback
