@@ -2,6 +2,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Siderr from "./components/Siderr";
 // import CreateUserForm from "./components/CreateUserForm";
 import CreateUserPage from "./pages/CreateUserPage";
+import CreateCategoryPage from "./pages/CreateCategoryPage";
 
 const App = () => {
   return (
@@ -24,7 +25,7 @@ const App = () => {
             <Route path="create-user" element={<CreateUserPage />} />
             <Route
               path="create-category"
-              element={<div>Create Category</div>}
+              element={<CreateCategoryPage/>}
             />
             <Route path="analytics" element={<div>Analytics</div>} />
           </Route>
