@@ -1,9 +1,13 @@
-import { Button, Input, Select, Card, Typography } from "antd";
+import { Button, Input, Select, Typography, Drawer } from "antd";
 import React from "react";
 import { Form } from "antd";
 import { UserRoles } from "../enums/roles";
+interface createUserFormProps {
+  open: boolean | undefined;
+  onClose: () => void;
+}
 
-const CreateUserForm: React.FC = () => {
+const CreateUserForm: React.FC<createUserFormProps> = ({ open, onClose }) => {
   const [form] = Form.useForm();
   const { Option } = Select;
   const { Title } = Typography;
@@ -17,31 +21,24 @@ const CreateUserForm: React.FC = () => {
       role: values.role,
     };
     console.log(payload);
+    onClose();
   };
 
   return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        padding: "2rem",
-      }}
-    >
-      <Card
-        style={{
-          maxWidth: 500,
-          width: "100%",
-          borderRadius: 8,
-          boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
-        }}
-      >
+    <div>
+      <Drawer open={open} onClose={onClose}>
         <Form
           form={form}
           layout="vertical"
           onFinish={handleSubmit}
           autoComplete="off"
         >
-          <Title level={3} style={{alignItems:"center",justifyContent:"center"}}>Create User</Title>
+          <Title
+            level={3}
+            style={{ alignItems: "center", justifyContent: "center" }}
+          >
+            Create User
+          </Title>
           <Form.Item
             label="First Name"
             name="firstname"
@@ -166,7 +163,8 @@ const CreateUserForm: React.FC = () => {
             </Button>
           </Form.Item>
         </Form>
-      </Card>
+        {/* </Card> */}
+      </Drawer>
     </div>
   );
 };

@@ -143,7 +143,6 @@
 
 // export default Siderr;
 
-
 import React, { useState } from "react";
 import {
   DashboardOutlined,
@@ -153,23 +152,22 @@ import {
   UploadOutlined,
 } from "@ant-design/icons";
 import { Button, Layout, Menu, theme } from "antd";
-import { Link, Outlet, useLocation } from "react-router-dom";
+import { Link, Outlet, useParams } from "react-router-dom";
 
 const { Header, Sider, Content } = Layout;
 
 const Siderr: React.FC = () => {
   const [collapsed, setCollapsed] = useState(false);
   // const location = useLocation();
-  localStorage.setItem("role","admin");
+  localStorage.setItem("role", "admin");
+  const { id } = useParams();
 
-  // Example: Get user role from localStorage or context
   const userRole = localStorage.getItem("role") || "submitter";
 
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
 
-  // Role-based menu config
   const menuConfig = [
     {
       key: "/dashboard",
@@ -205,40 +203,40 @@ const Siderr: React.FC = () => {
       key: "/approvals",
       icon: <UploadOutlined />,
       label: "Approvals",
-      roles: ["admin", "subadmin" ,"approver"],
+      roles: ["admin", "subadmin", "approver"],
     },
     {
       key: "/user-management",
       icon: <UploadOutlined />,
       label: "User Management",
-      roles: ["admin","subadmin"],
+      roles: ["admin", "subadmin"],
     },
     {
       key: "/create-user",
       icon: <UploadOutlined />,
       label: "Create User",
-      roles: ["admin","subadmin"],
+      roles: ["admin", "subadmin"],
     },
     {
       key: "/create-category",
       icon: <UploadOutlined />,
       label: "Create Category",
-      roles: ["admin","subadmin"],
+      roles: ["admin", "subadmin"],
     },
     {
       key: "/analytics",
       icon: <UploadOutlined />,
       label: "Analytics",
-     roles: ["admin", "subadmin", "approver", "submitter"],
+      roles: ["admin", "subadmin", "approver", "submitter"],
     },
   ];
 
   // Filter menu based on current user's role
   const filteredMenu = menuConfig
-    .filter(item => item.roles.includes(userRole))
-    .map(item => ({
+    .filter((item) => item.roles.includes(userRole))
+    .map((item) => ({
       ...item,
-      label: <Link to={item.key}>{item.label}</Link>,
+      label: <Link to={`/${id}${item.key}`}>{item.label}</Link>,
     }));
 
   return (
