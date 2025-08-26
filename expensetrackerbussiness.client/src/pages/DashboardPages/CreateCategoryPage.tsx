@@ -1,7 +1,7 @@
 import { PlusOutlined } from '@ant-design/icons';
 import { Button } from 'antd'
 import React, { useState } from 'react'
-import CategoryModal from '../components/CategoryModal';
+import CategoryModal from '../../components/CategoryModal';
 
 const CreateCategoryPage:React.FC = () => {
     const [openCategoryModal,setOpenCategoryModal] = useState<boolean>(false);

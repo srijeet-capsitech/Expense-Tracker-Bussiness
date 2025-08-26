@@ -1,7 +1,7 @@
 import { UserAddOutlined } from "@ant-design/icons";
 import { Button } from "antd";
 import React, { useState } from "react";
-import CreateUserForm from "../components/CreateUserForm";
+import CreateUserForm from "../../components/CreateUserForm";
 
 const CreateUserPage: React.FC = () => {
   const [openCreateUserModal, setOpenCreateUserModal] = useState<
