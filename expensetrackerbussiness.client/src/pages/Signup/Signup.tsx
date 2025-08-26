@@ -1,29 +1,40 @@
-import {
-  Form,
-  Input,
-  Button,
-  Typography,
-  Col,
-  Row,
-  Checkbox,
-} from "antd";
-
+import { Form, Input, Button, Typography, Col, Row, Checkbox } from "antd";
 import { useNavigate } from "react-router-dom";
 import "./Signup.css";
 import { ArrowRightOutlined } from "@ant-design/icons";
 import { FcGoogle } from "react-icons/fc";
 import capsi from "../../assets/image.png";
 
+interface signdata{
+  firstname:string,
+  lastname:string,
+  businessname:string,
+  email:string,
+  phoneno:number,
+  password:string,
+  confirmpassword:string
+}
 
 const Signup: React.FC = () => {
   const [form] = Form.useForm();
   const navigate = useNavigate();
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const onFinish = (values: any) => {
-    console.log("Form Submitted", values);
-    navigate("/:id");
+  // const onFinish = (values: any) => {
+  //   console.log("Form Submitted", values);
+  //   navigate("/:id");
+  // };
 
+  const onFinish = (values: signdata) => {
+    const payload = {
+      name: `${values.firstname} ${values.lastname}`,
+      businessname:values.businessname,
+      email: values.email,
+      password: values.password,
+      phoneno: values.phoneno,
+      confirmpassword: values.confirmpassword,
+    };
+    console.log(payload);
+    form.resetFields();
   };
 
   return (
@@ -99,7 +110,7 @@ const Signup: React.FC = () => {
                 <Col span={12}>
                   <Form.Item
                     label="First Name"
-                    name="firstName"
+                    name="firstname"
                     rules={[
                       { required: true, message: "First name is required" },
                       {
@@ -118,14 +129,14 @@ const Signup: React.FC = () => {
                     ]}
                     hasFeedback
                   >
-                    <Input placeholder="Enter First Name" />
+                    <Input placeholder="Enter first name" />
                   </Form.Item>
                 </Col>
 
                 <Col span={12}>
                   <Form.Item
                     label="Last Name"
-                    name="lastName"
+                    name="lastname"
                     rules={[
                       { required: true, message: "Last name is required" },
                       {
@@ -144,10 +155,34 @@ const Signup: React.FC = () => {
                     ]}
                     hasFeedback
                   >
-                    <Input placeholder="Enter Name" />
+                    <Input placeholder="Enter last name" />
                   </Form.Item>
                 </Col>
               </Row>
+
+              <Form.Item
+                label="Business Name"
+                name="businessname"
+                rules={[
+                  { required: true, message: "Business name is required" },
+                  {
+                    min: 3,
+                    message: "Business name must be at least 3 characters",
+                  },
+                  {
+                    whitespace: true,
+                    message: "Business name cannot be empty",
+                  },
+                  {
+                    pattern: /^[A-Z][a-zA-Z]*$/,
+                    message:
+                      "Business name must start with an uppercase letter and contain only letters",
+                  },
+                ]}
+                hasFeedback
+              >
+                <Input placeholder="Enter business name" />
+              </Form.Item>   
 
               <Form.Item
                 label="Email"
@@ -161,25 +196,74 @@ const Signup: React.FC = () => {
                       "Email must include a letter, number, contain '@', and end with '.com'",
                   },
                 ]}
-                hasFeedback    
+                hasFeedback
               >
-                <Input placeholder="Enter Email" />
+                <Input placeholder="Enter email" />
+              </Form.Item>
+
+              <Form.Item
+                label="Phone No"
+                name="phoneno"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please enter phone number",
+                  },
+                  {
+                    min: 0,
+                    max: 10,
+                    message: "Length must be of 10 digits long",
+                  },
+                  {
+                    pattern: /^[6-9][\d]{9}$/,
+                    message: "Enter a valid phone number",
+                  },
+                ]}
+                hasFeedback
+              >
+                <Input placeholder="Enter phone no." />
               </Form.Item>
 
               <Form.Item
                 label="Password"
                 name="password"
                 rules={[
-                  { required: true, message: "Please enter a Password" },
+                  { required: true, message: "Please enter a password" },
                   {
-                    pattern: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_]).{8,15}$/,
+                    pattern:
+                      /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_]).{8,15}$/,
                     message:
                       "Must contain at least one number, one uppercase and lowercase letter, one special character, and be at least 8 to 15 characters",
                   },
                 ]}
                 hasFeedback
               >
-                <Input.Password placeholder="Enter a Strong Password" />
+                <Input.Password placeholder="Enter a strong password" />
+              </Form.Item>
+
+              <Form.Item
+                label="Confirm Password"
+                name="confirmpassword"
+                dependencies={["password"]}
+                rules={[
+                  {
+                    required: true,
+                    message: "Please enter a correct Password",
+                  },
+
+                  ({ getFieldValue }) => ({
+                    validator(_, value) {
+                      if (!value || getFieldValue("password") === value) {
+                        return Promise.resolve();
+                      }
+
+                      return Promise.reject(new Error("Password Not Match"));
+                    },
+                  }),
+                ]}
+                hasFeedback
+              >
+                <Input.Password placeholder="Enter a confirm password" />
               </Form.Item>
 
               <Form.Item>
@@ -270,7 +354,7 @@ const Signup: React.FC = () => {
               Log in to your account so you can continue tracking your expenses.
             </Typography.Paragraph>
             <Button
-            htmlType="submit"
+              htmlType="submit"
               onClick={() => navigate("/login")}
               style={{
                 color: "white",

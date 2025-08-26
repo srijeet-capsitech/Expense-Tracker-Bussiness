@@ -1,8 +1,10 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Siderr from "./components/Siderr";
-import CreateUserForm from "./components/CreateUserForm";
+// import CreateUserForm from "./components/CreateUserForm";
 import Signup from "./pages/Signup/Signup";
 import Login from "./pages/Login/Login";
+import CreateUserPage from "./pages/UserManagement/CreateUserPage";
+// import CreateUserPage from "./pages/UserManagement/CreateUserPage";
 
 const App = () => {
   return (
@@ -19,10 +21,13 @@ const App = () => {
             <Route path="reports" element={<div>Reports</div>} />
             <Route path="advances" element={<div>Advances</div>} />
             <Route path="approvals" element={<div>Approvals</div>} />
-            <Route path="user-management" element={<div>User Management</div>} />
-            <Route path="create-user" element={<CreateUserForm/>}/>
+            <Route path="user-management" element={<CreateUserPage/>}/>
+             {/* <Route path="create-user" element={<CreateUserPage/>}/> */}
+             
+           
             <Route path="create-category" element={<div>Create Category</div>} />
             <Route path="analytics" element={<div>Analytics</div>} />
+            
 
           </Route>
             

@@ -1,7 +1,25 @@
-﻿#root {
+﻿/* #root {
   width: 100%;
   height: 100%;
   margin: 0;
-  /* padding: 2rem; */
-  /* text-align: center; */
+
+} */
+
+/* #components-layout-demo-custom-trigger .logo {
+  height: 32px;
+  margin: 16px;
+  background: rgba(255, 255, 255, 0.3);
+}
+
+#ant-layout-sider-trigger.trigger{
+  background-color: white;
+}
+
+#ant-layout-sider-children.side{
+  background-color: blueviolet;
+  height: 600px;
+} */
+
+:where(.css-dev-only-do-not-override-l9pxc0).ant-menu-light .ant-menu-item-selected, :where(.css-dev-only-do-not-override-l9pxc0).ant-menu-light>.ant-menu .ant-menu-item-selected{
+  background:  #20c7e9;
 }

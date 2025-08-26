@@ -102,7 +102,7 @@ const Login: React.FC = () => {
                 },
               ]}
             >
-              <Input placeholder="Enter Email" />
+              <Input placeholder="Enter email" />
             </Form.Item>
 
             <Form.Item
@@ -122,7 +122,7 @@ const Login: React.FC = () => {
                 },
               ]}
             >
-              <Input.Password placeholder="Enter Password" />
+              <Input.Password placeholder="Enter password" />
             </Form.Item>
 
             <Form.Item>
