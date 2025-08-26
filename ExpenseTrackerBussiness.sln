@@ -1,0 +1,33 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36301.6 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "expensetrackerbussiness.client", "expensetrackerbussiness.client\expensetrackerbussiness.client.esproj", "{D1ECD076-AFE6-3969-456A-0D5BFEC5B205}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExpenseTrackerBussiness.Server", "ExpenseTrackerBussiness.Server\ExpenseTrackerBussiness.Server.csproj", "{1E320540-B47A-4863-AF5F-AE48C13E3C07}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D1ECD076-AFE6-3969-456A-0D5BFEC5B205}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D1ECD076-AFE6-3969-456A-0D5BFEC5B205}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D1ECD076-AFE6-3969-456A-0D5BFEC5B205}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{D1ECD076-AFE6-3969-456A-0D5BFEC5B205}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D1ECD076-AFE6-3969-456A-0D5BFEC5B205}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D1ECD076-AFE6-3969-456A-0D5BFEC5B205}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{1E320540-B47A-4863-AF5F-AE48C13E3C07}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E320540-B47A-4863-AF5F-AE48C13E3C07}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E320540-B47A-4863-AF5F-AE48C13E3C07}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1E320540-B47A-4863-AF5F-AE48C13E3C07}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1FB6EF27-8CB7-478B-837A-69E6AE7B3919}
+	EndGlobalSection
+EndGlobal

@@ -1,43 +1,66 @@
-import { Form, Input, Button, Typography, Col, Row, Checkbox } from "antd";
-import { useNavigate } from "react-router-dom";
+
+import { Form, Input, Button, Typography, Col, Row, Checkbox, message } from "antd";
+import { Link, useNavigate } from "react-router-dom";
 import "./Signup.css";
 import { ArrowRightOutlined } from "@ant-design/icons";
 import { FcGoogle } from "react-icons/fc";
 import capsi from "../../assets/image.png";
 
-interface signdata{
-  firstname:string,
-  lastname:string,
-  businessname:string,
-  email:string,
-  phoneno:number,
-  password:string,
-  confirmpassword:string
+
+
+import axios from "axios";
+import { useState } from "react";
+
+interface SignupForm {
+  firstName: string;
+  lastName: string;
+  email: string;
+  passowrd: string;
+  phone: string;
+  businessName: string;
+
 }
 
 const Signup: React.FC = () => {
   const [form] = Form.useForm();
+
   const navigate = useNavigate();
 
-  // const onFinish = (values: any) => {
-  //   console.log("Form Submitted", values);
-  //   navigate("/:id");
-  // };
 
-  const onFinish = (values: signdata) => {
-    const payload = {
-      name: `${values.firstname} ${values.lastname}`,
-      businessname:values.businessname,
-      email: values.email,
-      password: values.password,
-      phoneno: values.phoneno,
-      confirmpassword: values.confirmpassword,
-    };
-    console.log(payload);
-    form.resetFields();
+
+
+
+
+  const [loading, setLoading] = useState<boolean>(false);
+  const navigate = useNavigate();
+  const [messageApi, contextHolder] = message.useMessage();
+
+  const onFinish = (values: SignupForm) => {
+    form.validateFields().then(async (values: SignupForm) => {
+      const payload = {
+        name: `${values.firstName} ${values.lastName}`,
+        email: values.email,
+        password: values.passowrd,
+        phone: values.phone,
+        bussinessName: values.businessName,
+      };
+      try {
+        setLoading(true);
+        const res = await axios.post("/auth/signup", payload);
+        console.log(res.data);
+        setLoading(false);
+      } catch (err:any) {
+         messageApi.error(err.response?.data?.message || "Signup failed!");
+        console.log(err);
+        setLoading(false);
+      }
+    });
   };
 
   return (
+    <>
+    {contextHolder}
+
     <div className="signup-wrapper">
       <Row className="signup-row">
         {/* Left Section (Form) */}
@@ -110,7 +133,8 @@ const Signup: React.FC = () => {
                 <Col span={12}>
                   <Form.Item
                     label="First Name"
-                    name="firstname"
+                    name="firstName"
+
                     rules={[
                       { required: true, message: "First name is required" },
                       {
@@ -129,14 +153,16 @@ const Signup: React.FC = () => {
                     ]}
                     hasFeedback
                   >
-                    <Input placeholder="Enter first name" />
+
+                    <Input placeholder="Enter First Name" />
                   </Form.Item>
                 </Col>
 
                 <Col span={12}>
                   <Form.Item
                     label="Last Name"
-                    name="lastname"
+
+                    name="lastName"
                     rules={[
                       { required: true, message: "Last name is required" },
                       {
@@ -155,14 +181,16 @@ const Signup: React.FC = () => {
                     ]}
                     hasFeedback
                   >
-                    <Input placeholder="Enter last name" />
+                    <Input placeholder="Enter Last Name" />
+
                   </Form.Item>
                 </Col>
               </Row>
 
               <Form.Item
                 label="Business Name"
-                name="businessname"
+                name="businessName"
+
                 rules={[
                   { required: true, message: "Business name is required" },
                   {
@@ -174,15 +202,19 @@ const Signup: React.FC = () => {
                     message: "Business name cannot be empty",
                   },
                   {
-                    pattern: /^[A-Z][a-zA-Z]*$/,
+
+                    pattern: /^[A-Za-z',&\s]{1,35}$/,
                     message:
-                      "Business name must start with an uppercase letter and contain only letters",
+                      `Business name must start with an uppercase letter and contain only letters and some special characters like , ' &`,
+
                   },
                 ]}
                 hasFeedback
               >
-                <Input placeholder="Enter business name" />
-              </Form.Item>   
+
+                <Input placeholder="Enter Business Name" />
+              </Form.Item>
+
 
               <Form.Item
                 label="Email"
@@ -198,16 +230,21 @@ const Signup: React.FC = () => {
                 ]}
                 hasFeedback
               >
+
                 <Input placeholder="Enter email" />
+
+
               </Form.Item>
 
               <Form.Item
                 label="Phone No"
-                name="phoneno"
+            
+                name="phone"
                 rules={[
                   {
                     required: true,
-                    message: "Please enter phone number",
+                    message: "Please Enter Phone Number",
+
                   },
                   {
                     min: 0,
@@ -222,6 +259,7 @@ const Signup: React.FC = () => {
                 hasFeedback
               >
                 <Input placeholder="Enter phone no." />
+
               </Form.Item>
 
               <Form.Item
@@ -229,6 +267,7 @@ const Signup: React.FC = () => {
                 name="password"
                 rules={[
                   { required: true, message: "Please enter a password" },
+
                   {
                     pattern:
                       /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_]).{8,15}$/,
@@ -238,6 +277,7 @@ const Signup: React.FC = () => {
                 ]}
                 hasFeedback
               >
+
                 <Input.Password placeholder="Enter a strong password" />
               </Form.Item>
 
@@ -264,10 +304,17 @@ const Signup: React.FC = () => {
                 hasFeedback
               >
                 <Input.Password placeholder="Enter a confirm password" />
+
+              </Form.Item>
+              <Form.Item style={{ marginBottom: 24, textAlign: "right" }}>
+                <Link to="/forget-password">Forget password?</Link>
+
               </Form.Item>
 
               <Form.Item>
                 <Button
+                  loading={loading}
+
                   type="primary"
                   htmlType="submit"
                   block
@@ -372,6 +419,8 @@ const Signup: React.FC = () => {
         </Col>
       </Row>
     </div>
+    </>
+
   );
 };
 

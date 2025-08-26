@@ -1,5 +1,7 @@
-import { Form, Input, Typography, Button, Row, Col } from "antd";
-import React from "react";
+
+
+import { Form, Input, Typography, Button, Row, Col, message } from "antd";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Login.css";
 import { ArrowRightOutlined } from "@ant-design/icons";
@@ -7,10 +9,41 @@ import Link from "antd/es/typography/Link";
 import { FcGoogle } from "react-icons/fc";
 import capsi from "../../assets/image.png";
 
+
+
+import axios from "axios";
+
+interface Loginform{
+  email:string,
+  password:string,
+}
+
 const Login: React.FC = () => {
   const navigate = useNavigate();
+  const [loading,setLoading] = useState<boolean>(false)
+  const [form] = Form.useForm();
+  const [messageApi, contextHolder] = message.useMessage();
+
+
+  const onFinish=(values:Loginform)=>{
+    form.validateFields().then(async(values:Loginform)=>{
+      try{
+        setLoading(true);
+        const res = await axios.post("/login",values)
+        console.log(res.data);
+        setLoading(false)
+      }catch(err:any){
+        messageApi.error(err.response?.data?.message || "Login failed!");
+        console.log(err)
+        setLoading(false);
+      }
+    })
+  }
 
   return (
+   <>
+   {contextHolder}
+
     <div className="login-wrapper">
       <Row className="login-row">
         {/* Left Section */}
@@ -42,9 +75,12 @@ const Login: React.FC = () => {
         {/* Right Section */}
         <Col xs={24} md={12} className="login-right">
           <Form
+          form={form}
             layout="vertical"
             requiredMark={false}
             style={{ width: "100%", maxWidth: 400 }}
+            onFinish={onFinish}
+
           >
             <div style={{ textAlign: "center", marginBottom: "1rem" }}>
               <div className="capsi">
@@ -89,20 +125,22 @@ const Login: React.FC = () => {
               name="email"
               rules={[
                 { required: true, message: "Email is required" },
-                // { type: "email", message: "Please enter a valid email" },
+
+                { type: "email", message: "Please enter a valid email" },
+                {
+                  pattern: /^(?=.*\d)[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.com$/,
+                  message:
+                    "Email must include a number, contain '@', and end with '.com'",
+                },
                 // {
                 //   pattern: /^(?=.*\d)[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.com$/,
                 //   message:
-                //     "Email must include a number, contain '@', and end with '.com'",
+                //     "Email is incorrect",
                 // },
-                {
-                  // pattern: /^(?=.*\d)[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.com$/,
-                  message:
-                    "Email is incorrect",
-                },
               ]}
             >
-              <Input placeholder="Enter email" />
+              <Input placeholder="Enter Email" />
+
             </Form.Item>
 
             <Form.Item
@@ -110,24 +148,26 @@ const Login: React.FC = () => {
               name="password"
               rules={[
                 { required: true, message: "Please enter a password" },
-                // {
-                //   pattern: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_]).{8,}$/,
-                //   message:
-                //     "Must contain at least one number, one uppercase and lowercase letter, one special character, and be at least 8 characters",
-                // },
+
                 {
-                  // pattern: /^(?=.*\d)[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.com$/,
+                  pattern: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_]).{8,}$/,
                   message:
-                     "Password is incorrect",
+                    "Must contain at least one number, one uppercase and lowercase letter, one special character, and be at least 8 characters",
                 },
+                // {
+                //   // pattern: /^(?=.*\d)[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.com$/,
+                //   message:
+                //      "Password is incorrect",
+                // },
               ]}
             >
-              <Input.Password placeholder="Enter password" />
+              <Input.Password placeholder="Enter Password" />
+
             </Form.Item>
 
             <Form.Item>
-              <Button
-              onClick={()=>navigate("/:id")}
+              <Butto
+              loading={loading}
                 type="primary"
                 htmlType="submit"
                 block
@@ -182,6 +222,9 @@ const Login: React.FC = () => {
         </Col>
       </Row>
     </div>
+
+    </>
+
   );
 };
 
