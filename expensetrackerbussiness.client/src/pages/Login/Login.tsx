@@ -1,3 +1,5 @@
+
+
 import { Form, Input, Typography, Button, Row, Col, message } from "antd";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -6,6 +8,9 @@ import { ArrowRightOutlined } from "@ant-design/icons";
 import Link from "antd/es/typography/Link";
 import { FcGoogle } from "react-icons/fc";
 import capsi from "../../assets/image.png";
+
+
+
 import axios from "axios";
 
 interface Loginform{
@@ -38,6 +43,7 @@ const Login: React.FC = () => {
   return (
    <>
    {contextHolder}
+
     <div className="login-wrapper">
       <Row className="login-row">
         {/* Left Section */}
@@ -74,6 +80,7 @@ const Login: React.FC = () => {
             requiredMark={false}
             style={{ width: "100%", maxWidth: 400 }}
             onFinish={onFinish}
+
           >
             <div style={{ textAlign: "center", marginBottom: "1rem" }}>
               <div className="capsi">
@@ -118,6 +125,7 @@ const Login: React.FC = () => {
               name="email"
               rules={[
                 { required: true, message: "Email is required" },
+
                 { type: "email", message: "Please enter a valid email" },
                 {
                   pattern: /^(?=.*\d)[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.com$/,
@@ -132,6 +140,7 @@ const Login: React.FC = () => {
               ]}
             >
               <Input placeholder="Enter Email" />
+
             </Form.Item>
 
             <Form.Item
@@ -139,6 +148,7 @@ const Login: React.FC = () => {
               name="password"
               rules={[
                 { required: true, message: "Please enter a password" },
+
                 {
                   pattern: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_]).{8,}$/,
                   message:
@@ -152,10 +162,11 @@ const Login: React.FC = () => {
               ]}
             >
               <Input.Password placeholder="Enter Password" />
+
             </Form.Item>
 
             <Form.Item>
-              <Button
+              <Butto
               loading={loading}
                 type="primary"
                 htmlType="submit"
@@ -211,7 +222,9 @@ const Login: React.FC = () => {
         </Col>
       </Row>
     </div>
+
     </>
+
   );
 };
 

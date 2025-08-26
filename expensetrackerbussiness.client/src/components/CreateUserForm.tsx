@@ -1,5 +1,8 @@
+
+
 import { Button, Input, Select, Typography, Drawer, Space, message } from "antd";
 import React, { useState } from "react";
+
 import { Form } from "antd";
 import { UserRoles, type UserRole } from "../enums/roles";
 import axios from "axios";
@@ -9,13 +12,13 @@ interface createUserFormProps {
   onClose: () => void;
 }
 
-interface createUserForm {
-  firstname: string;
-  lastname: string;
-  email: string;
-  password: string;
-  phone: string;
-  role: UserRole;
+interface userData{
+  firstname:string,
+  lastname:string,
+  email:string,
+  password:string,
+  phoneno:number,
+  role:string
 }
 
 const CreateUserForm: React.FC<createUserFormProps> = ({ open, onClose }) => {
@@ -24,7 +27,7 @@ const CreateUserForm: React.FC<createUserFormProps> = ({ open, onClose }) => {
   const [messageApi, contextHolder] = message.useMessage();
   const [loading, setLoading] = useState<boolean>(false);
 
-  const handleSubmit = (values: createUserForm) => {
+  const handleSubmit = (values: userData) => {
     form.validateFields().then(async(values) => {
       try {
         setLoading(true)
@@ -62,18 +65,20 @@ const CreateUserForm: React.FC<createUserFormProps> = ({ open, onClose }) => {
           </Space>
         }
       >
+
         <Form
           form={form}
           layout="vertical"
           onFinish={handleSubmit}
           autoComplete="off"
         >
-          {/* <Title
+           <Title
             level={3}
             style={{ alignItems: "center", justifyContent: "center" }}
           >
             Create User
-          </Title> */}
+          </Title>
+      
           <Form.Item
             label="First Name"
             name="firstname"
@@ -94,7 +99,7 @@ const CreateUserForm: React.FC<createUserFormProps> = ({ open, onClose }) => {
               },
             ]}
           >
-            <Input placeholder="Enter First Name" />
+            <Input placeholder="Enter first name" />
           </Form.Item>
 
           <Form.Item
@@ -117,7 +122,7 @@ const CreateUserForm: React.FC<createUserFormProps> = ({ open, onClose }) => {
               },
             ]}
           >
-            <Input placeholder="Enter Last Name" />
+            <Input placeholder="Enter last name" />
           </Form.Item>
 
           <Form.Item
@@ -133,7 +138,7 @@ const CreateUserForm: React.FC<createUserFormProps> = ({ open, onClose }) => {
               },
             ]}
           >
-            <Input placeholder="Enter Email" />
+            <Input placeholder="Enter email" />
           </Form.Item>
 
           <Form.Item
@@ -148,16 +153,16 @@ const CreateUserForm: React.FC<createUserFormProps> = ({ open, onClose }) => {
               },
             ]}
           >
-            <Input.Password placeholder="Enter Password" />
+            <Input.Password placeholder="Enter password" />
           </Form.Item>
 
           <Form.Item
             label="Phone No"
-            name="phone"
+            name="phoneno"
             rules={[
               {
                 required: true,
-                message: "Please Enter Phone Number",
+                message: "Please enter phone number",
               },
               {
                 min: 0,
@@ -170,7 +175,25 @@ const CreateUserForm: React.FC<createUserFormProps> = ({ open, onClose }) => {
               },
             ]}
           >
-            <Input placeholder="Enter Phone No" />
+            <Input placeholder="Enter phone no" />
+          </Form.Item>
+          <Form.Item
+            label="Department"
+            name="dept"
+            rules={[
+              {
+                required: true,
+                message: "Please select a department",
+              },
+            ]}
+          >
+            <Select placeholder="Select a Role">
+              {UserRoles.map((role) => (
+                <Option key={role.id} value={role.id}>
+                  {role.name}
+                </Option>
+              ))}
+            </Select>
           </Form.Item>
           <Form.Item
             label="Department"
@@ -197,11 +220,11 @@ const CreateUserForm: React.FC<createUserFormProps> = ({ open, onClose }) => {
             rules={[
               {
                 required: true,
-                message: "Please Select a Role",
+                message: "Please select a role",
               },
             ]}
           >
-            <Select placeholder="Select a Role">
+            <Select placeholder="Select a role">
               {UserRoles.map((role) => (
                 <Option key={role.id} value={role.id}>
                   {role.name}
@@ -210,11 +233,22 @@ const CreateUserForm: React.FC<createUserFormProps> = ({ open, onClose }) => {
             </Select>
           </Form.Item>
 
-          {/* <Form.Item>
-            <Button type="primary" htmlType="submit" block>
-              Create
+          <Form.Item>
+            <Button
+              type="primary"
+              htmlType="submit"
+              block
+              style={{
+                height: 40,
+                background: "linear-gradient(to bottom right, #48CAE4,#1667C2)",
+              }}
+            >
+              Create User
+
+
+          
             </Button>
-          </Form.Item> */}
+          </Form.Item> 
         </Form>
         {/* </Card> */}
       </Drawer>
