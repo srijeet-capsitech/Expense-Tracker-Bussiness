@@ -140,75 +140,266 @@
 
 
 
-using ExpenseTrackerBusiness.Server.Dto.Signup;
-using ExpenseTrackerBusiness.Server.DTOs.Login;
-using ExpenseTrackerBusiness.Server.DTOs.Signup;
+//using ExpenseTrackerBussiness.Server.Dto.Signup;
+//using ExpenseTrackerBussiness.Server.DTOs.Login;
+//using ExpenseTrackerBussiness.Server.DTOs.Signup;
+//using ExpenseTrackerBussiness.Server.Models;
+//using ExpenseTrackerBussiness.Server.Services.Interfaces;
+//using Microsoft.AspNetCore.Identity;
+//using MongoDB.Driver;
+
+//namespace ExpenseTrackerBussiness.Server.Services
+//{
+//    public class UserService : IUserService
+//    {
+//        private readonly IMongoCollection<User> _users;
+//        private readonly IConfiguration _config;
+//        private readonly ITokenService _tokenService;
+//        private readonly UserManager<IdentityUser> _user;
+//        public UserService(IConfiguration config, ITokenService tokenService)
+//        {
+//            _config = config;
+//            _tokenService = tokenService;
+//            var client = new MongoClient(_config.GetConnectionString("ConnectionString"));
+//            var database = client.GetDatabase("ExpenceTrackerDb");
+//            _users = database.GetCollection<User>("Users");
+//        }
+
+//        public async Task<SignupResponse> Signup(SignupRequest dto)
+//        {
+//            //var existingUser = await _users.Find(u => u.Email == dto.Email).FirstOrDefaultAsync();
+//            var existingUser = await _users.FindByEmailAsync(request.Email);
+//            if (existingUser != null)
+//                throw new Exception("Email already exists.");
+
+//            var refreshToken = _tokenService.GenerateRefreshToken();
+//            var user = new User
+//            {
+//                Name = dto.Name,
+//                Email = dto.Email,
+//                Password = BCrypt.Net.BCrypt.HashPassword(dto.Password),
+//                Phone = dto.Phone,
+//                RefreshToken = refreshToken
+//            };
+
+//            //await _users.InsertOneAsync(user);
+
+//            var token = _tokenService.GenerateJwtToken(user);
+
+//            return new SignupResponse
+//            {
+//                Id = user.Id,
+//                Name = user.Name,
+//                Email = user.Email,
+//                Token = token,
+//                Message = "Signup successful"
+//            };
+//        }
+
+//        public async Task<LoginResponce> Login(LoginRequest dto)
+//        {
+//            var user = await _users.Find(u => u.Email == dto.Email).FirstOrDefaultAsync();
+//            if (user == null)
+//                throw new Exception("User does not exist.");
+//            if (!BCrypt.Net.BCrypt.Verify(dto.Password, user.Password))
+//                throw new Exception("Invalid credentials.");
+
+//            var token = _tokenService.GenerateJwtToken(user);
+//            var refreshToken = _tokenService.GenerateRefreshToken();
+//            user.RefreshToken = refreshToken;
+//            await _users.ReplaceOneAsync(u => u.Id == user.Id, user);
+
+//            return new LoginResponce
+//            {
+//                Id = user.Id,
+//                Name = user.Name,
+//                Email = user.Email,
+//                Token = token,
+//                RefreshToken = refreshToken,
+//                Message = "Login successful"
+//            };
+//        }
+
+
+
+//    }
+//}
+
+
+
+
+//using ExpenseTrackerBussiness.Server.DTOs.Signup;
+//using ExpenseTrackerBussiness.Server.DTOs.Login;
+////using ExpenseTrackerBussiness.Server.DTOs.Signup;
+//using ExpenseTrackerBussiness.Server.Models;
+//using ExpenseTrackerBussiness.Server.Services.Interfaces;
+//using Microsoft.AspNetCore.Identity;
+//using ExpenseTrackerBussiness.Server.Dto.Signup;
+
+//namespace ExpenseTrackerBussiness.Server.Services
+//{
+//    public class UserService : IUserService
+//    {
+//        private readonly UserManager<User> _userManager;
+//        private readonly SignInManager<User> _signInManager;
+//        private readonly ITokenService _tokenService;
+
+//        public UserService(UserManager<User> userManager, SignInManager<User> signInManager, ITokenService tokenService)
+//        {
+//            _userManager = userManager;
+//            _signInManager = signInManager;
+//            _tokenService = tokenService;
+//        }
+
+//        public async Task<SignupResponse> Signup(SignupRequest request)
+//        {
+
+//            var user = new User
+//            {
+//                //UserName = request.Email,
+//                UserName = request.Email,
+//                Email = request.Email,
+//                Name = request.Name,
+//                PhoneNumber = request.PhoneNumber,
+//                BusinessName = request.BussinessName,
+//                Status = UserStatus.Active
+//            };
+
+//            var result = await _userManager.CreateAsync(user, request.Password);
+
+//            if (!result.Succeeded)
+//            {
+//                return new SignupResponse
+//                {
+//                    Success = false,
+//                    Message = string.Join(", ", result.Errors.Select(e => e.Description)),
+
+//                    //return this required:
+//                     //Id = user.Id,
+////                Name = user.Name,
+////                Email = user.Email,
+////                Token = token,
+////                Message = "Signup successful"  // hash the password
+//                };
+//            }
+
+//            //await _userManager.AddToRoleAsync(user, "Submitter");
+
+//            return new SignupResponse { Success = true, Message = "User registered successfully" };
+//        }
+
+//        public async Task<LoginResponse> Login(LoginRequest request)
+//        {
+//            var user = await _userManager.FindByEmailAsync(request.Email);
+//            if (user == null)
+//                return new LoginResponse { Success = false, Message = "Invalid email or password" };
+
+//            var result = await _signInManager.CheckPasswordSignInAsync(user, request.Password, false);
+//            if (!result.Succeeded)
+//                return new LoginResponse { Success = false, Message = "Invalid email or password" };
+
+//            var roles = await _userManager.GetRolesAsync(user);
+//            //var token = _tokenService.GenerateAccessToken(user, roles);
+//            var token = _tokenService.GenerateAccessToken(user);
+
+//            var refreshToken = _tokenService.GenerateRefreshToken();
+
+//            return new LoginResponse
+//            {
+//                Success = true,
+//                Token = token,
+//                RefreshToken = refreshToken,
+//                Message = "Login successful"
+//            };
+//        }
+//    }
+//}
+
+
+
+using AspNetCore.Identity.MongoDbCore.Models;
+using ExpenseTrackerBussiness.Server.Dto.Signup;
+using ExpenseTrackerBussiness.Server.DTOs.Login;
+using ExpenseTrackerBussiness.Server.DTOs.Signup;
 using ExpenseTrackerBussiness.Server.Models;
 using ExpenseTrackerBussiness.Server.Services.Interfaces;
-using MongoDB.Driver;
+using Microsoft.AspNetCore.Identity;
 
 namespace ExpenseTrackerBussiness.Server.Services
 {
     public class UserService : IUserService
     {
-        private readonly IMongoCollection<User> _users;
-        private readonly IConfiguration _config;
-        private readonly ITokenService _tokenService; // Inject TokenService
+        private readonly UserManager<User> _userManager;
+        private readonly SignInManager<User> _signInManager;
+        private readonly ITokenService _tokenService;
 
-        public UserService(IConfiguration config, ITokenService tokenService)
+        public UserService(
+            UserManager<User> userManager,
+            SignInManager<User> signInManager,
+            ITokenService tokenService)
         {
-            _config = config;
+            _userManager = userManager;
+            _signInManager = signInManager;
             _tokenService = tokenService;
-            var client = new MongoClient(_config.GetConnectionString("ConnectionString"));
-            var database = client.GetDatabase("ExpenceTrackerDb");
-            _users = database.GetCollection<User>("Users");
         }
 
-        public async Task<SignupResponce> Signup(SignupRequest dto)
+        public async Task<SignupResponse> Signup(SignupRequest request)
         {
-            var existingUser = await _users.Find(u => u.Email == dto.Email).FirstOrDefaultAsync();
-            if (existingUser != null)
+            var existing = await _userManager.FindByEmailAsync(request.Email);
+            if (existing != null)
                 throw new Exception("Email already exists.");
 
-            var refreshToken = _tokenService.GenerateRefreshToken();
             var user = new User
             {
-                Name = dto.Name,
-                Email = dto.Email,
-                Password = BCrypt.Net.BCrypt.HashPassword(dto.Password),
-                Phone = dto.Phone,
-                RefreshToken = refreshToken
+                UserName = request.Email, // ye wala required by Identity
+                Email = request.Email,
+                Name = request.Name,
+                PhoneNumber = request.PhoneNumber,
+                BusinessName = request.BussinessName,
+                Status = UserStatus.Active
             };
 
-            await _users.InsertOneAsync(user);
-            var token = _tokenService.GenerateJwtToken(user);
+            var result = await _userManager.CreateAsync(user, request.Password);
+            if (!result.Succeeded)
+                throw new Exception(string.Join(", ", result.Errors.Select(e => e.Description)));
 
-            return new SignupResponce
+            var token = _tokenService.GenerateAccessToken(user);
+            var refreshToken = _tokenService.GenerateRefreshToken();
+
+            user.RefreshToken = refreshToken;
+            await _userManager.UpdateAsync(user);
+
+            return new SignupResponse
             {
-                Id = user.Id,
+                Id = user.Id.ToString(),   // ObjectId ? string
                 Name = user.Name,
                 Email = user.Email,
+                BussinessName=user.BusinessName,
                 Token = token,
+                RefreshToken = refreshToken,
                 Message = "Signup successful"
             };
         }
 
-        public async Task<LoginResponce> Login(LoginRequest dto)
+        public async Task<LoginResponse> Login(LoginRequest request)
         {
-            var user = await _users.Find(u => u.Email == dto.Email).FirstOrDefaultAsync();
+            var user = await _userManager.FindByEmailAsync(request.Email);
             if (user == null)
                 throw new Exception("User does not exist.");
-            if (!BCrypt.Net.BCrypt.Verify(dto.Password, user.Password))
+
+            var result = await _signInManager.CheckPasswordSignInAsync(user, request.Password, false);
+            if (!result.Succeeded)
                 throw new Exception("Invalid credentials.");
 
-            var token = _tokenService.GenerateJwtToken(user);
+            var token = _tokenService.GenerateAccessToken(user);
             var refreshToken = _tokenService.GenerateRefreshToken();
-            user.RefreshToken = refreshToken;
-            await _users.ReplaceOneAsync(u => u.Id == user.Id, user);
 
-            return new LoginResponce
+            user.RefreshToken = refreshToken;
+            await _userManager.UpdateAsync(user);
+
+            return new LoginResponse
             {
-                Id = user.Id,
+                Id = user.Id.ToString(),
                 Name = user.Name,
                 Email = user.Email,
                 Token = token,

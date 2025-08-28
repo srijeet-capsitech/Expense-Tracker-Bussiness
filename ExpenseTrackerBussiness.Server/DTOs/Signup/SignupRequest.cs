@@ -67,36 +67,66 @@ namespace ExpenseTrackerBussiness.Server.DTOs.Signup
             [StringLength(30, MinimumLength = 3, ErrorMessage = "Name must be between 3 to 30 characters.")]
             public string Name { get; set; } = string.Empty;
 
+
+
+
+
             [Required(ErrorMessage = "Email is required.")]
             [EmailAddress(ErrorMessage = "Invalid Email Address.")]
             public string Email { get; set; } = string.Empty;
+
+
+
 
             [Required(ErrorMessage = "Password is required.")]
             [RegularExpression(@"^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_]).{8,15}$",
                 ErrorMessage = "Password must be 8-15 characters long, with one uppercase, one lowercase, one digit, and one special character.")]
             public string Password { get; set; } = string.Empty;
 
-            [Required(ErrorMessage = "Phone number is required.")]
+
+        [Required(ErrorMessage = "Confirm Password is required.")]
+        [Compare("Password", ErrorMessage = "Passwords do not match.")]
+        public string ConfirmPassword { get; set; } = string.Empty;
+
+
+        [Required(ErrorMessage = "Phone number is required.")]
             [Phone(ErrorMessage = "Invalid Phone no format.")]
-            public string Phone { get; set; } = string.Empty;
+            public string PhoneNumber { get; set; } = string.Empty;
 
-            [Required(ErrorMessage = "Business name is required.")]
-            [StringLength(100, MinimumLength = 2, ErrorMessage = "Business or company name is required.")]
-            public string Business_name { get; set; } = string.Empty;
+           
 
-            [Required(ErrorMessage = "Role is required.")]
-            public Role Role { get; set; }
-
-            [Required(ErrorMessage = "Department ID is required.")]
-            public string DepartmentId { get; set; } = string.Empty;
+          
 
             [Required(ErrorMessage = "Business Name is required.")]
             [StringLength(35, MinimumLength = 3, ErrorMessage = "Business Name must be between 3 to 35 characters.")]
             public string BussinessName { get; set; } = string.Empty;
 
-            public string CreatedBy { get; set; } = "System";
-        }
+
+
+
+        //[Required(ErrorMessage = "Role is required.")]
+        //public Role Role { get; set; }
+
+        //[Required(ErrorMessage = "Department ID is required.")]
+        //public string DepartmentId { get; set; } = string.Empty;
+
+        //public string CreatedBy { get; set; } = "System";
+
+
+        //ForgetPassword and confirm password matchiching validation :
+        //        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        //{
+        //    if (Password != ConfirmPassword)
+        //    {
+        //        yield return new ValidationResult("Password and Confirm Password must match.", new[] { nameof(ConfirmPassword) });
+        //    }
+        //}
+
+
+
+
     }
+}
 
 
 

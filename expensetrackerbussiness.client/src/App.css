@@ -1,7 +1,19 @@
-﻿#root {
-  width: 100%;
-  height: 100%;
-  margin: 0;
-  /* padding: 2rem; */
-  /* text-align: center; */
+﻿/* #root {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 2rem;
+    text-align: center;
+}
+
+th, td {
+    padding-left: 1rem;
+    padding-right: 1rem;
+} */
+
+/* :where(.css-dev-only-do-not-override-l9pxc0).ant-menu-light .ant-menu-item-selected, :where(.css-dev-only-do-not-override-l9pxc0).ant-menu-light>.ant-menu .ant-menu-item-selected{
+  background:  #20c7e9;
+} */
+
+:where(.css-dev-only-do-not-override-1v28nim).ant-menu-light .ant-menu-item-selected, :where(.css-dev-only-do-not-override-1v28nim).ant-menu-light>.ant-menu .ant-menu-item-selected{
+    background: #20c7e9;
 }

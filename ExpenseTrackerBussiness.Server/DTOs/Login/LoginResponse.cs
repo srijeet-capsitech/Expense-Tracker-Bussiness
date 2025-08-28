@@ -5,9 +5,6 @@
 // message 
 
 
-
-
-
 namespace ExpenseTrackerBussiness.Server.DTOs.Login
 {
     public class LoginResponse
@@ -18,5 +15,6 @@ namespace ExpenseTrackerBussiness.Server.DTOs.Login
         public string Token { get; set; } = string.Empty;
         public string RefreshToken { get; set; } = string.Empty;
         public string Message { get; set; } = string.Empty;
+        public bool Success { get; internal set; }    // responce body se ye hatana hai
     }
 }

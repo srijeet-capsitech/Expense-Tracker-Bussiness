@@ -1,7 +1,13 @@
+using AspNetCore.Identity.MongoDbCore.Infrastructure;
+using ExpenseTrackerBussiness.Server.Models;
 using ExpenseTrackerBussiness.Server.Services;
 using ExpenseTrackerBussiness.Server.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
+using MongoDB.Bson;
+using MongoDB.Driver;
+using System.Data;
 using System.Text;
 using System.Text.Json.Serialization;
 
@@ -14,6 +20,38 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+
+
+
+builder.Services.Configure<MongoDbSettings>(
+    builder.Configuration.GetSection("MongoDbSettings"));
+
+builder.Services.AddSingleton<IMongoClient>(s =>
+    new MongoClient(builder.Configuration.GetValue<string>("MongoDbSettings:ConnectionString")));
+
+
+//builder.Services.AddIdentity<User, IdentityRole>()
+//    .AddMongoDbStores<User, IdentityRole, string>(
+//        builder.Configuration.GetValue<string>("MongoDbSettings:ConnectionString"),
+//        builder.Configuration.GetValue<string>("MongoDbSettings:DatabaseName"))
+//    .AddDefaultTokenProviders();
+
+//builder.Services.AddIdentity<User, Role>()
+//    .AddMongoDbStores<User, Role, string>(
+//        builder.Configuration.GetValue<string>("MongoDbSettings:ConnectionString"),
+//        builder.Configuration.GetValue<string>("MongoDbSettings:DatabaseName"))
+//    .AddDefaultTokenProviders();
+
+builder.Services.AddIdentity<User, Role>()
+    .AddMongoDbStores<User, Role, ObjectId>(
+        builder.Configuration["MongoDbSettings:ConnectionString"],
+        builder.Configuration["MongoDbSettings:DatabaseName"])
+    .AddDefaultTokenProviders();
+
+
+
+
 
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)  // alag service mai banega 

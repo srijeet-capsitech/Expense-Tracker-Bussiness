@@ -4,4 +4,4 @@ export const UserRoles = [
   { id: 3, name: "Submitter" }
 ] as const;
 
-type UserRole = typeof UserRoles[number];
+type UserRoles = typeof UserRoles[number];

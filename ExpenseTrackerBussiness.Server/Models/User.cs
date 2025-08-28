@@ -273,84 +273,153 @@
 //}
 
 
+//using Microsoft.AspNetCore.Identity;
+//using MongoDB.Bson;
+//using MongoDB.Bson.Serialization.Attributes;
+//using System.ComponentModel.DataAnnotations;
+
+//namespace ExpenseTrackerBussiness.Server.Models
+//{
+//    public class User : IdentityUser
+//    {
+//        [BsonId]
+//        [BsonRepresentation(BsonType.ObjectId)]
+//        public override string Id { get; set; } = string.Empty;
+
+//        [Required(ErrorMessage = "Name is required.")]
+//        [StringLength(30, MinimumLength = 3, ErrorMessage = "Name must be between 3 to 30 characters.")]
+//        [BsonElement("name")]
+//        public string Name { get; set; } = string.Empty;
+
+//        //[Required(ErrorMessage = "Phone number is required.")]
+//        [Phone(ErrorMessage = "Invalid Phone no format.")]
+//        //[BsonElement("phoneNo")]
+//        public override string PhoneNumber { get; set; } = string.Empty;
+
+//        [Required(ErrorMessage = "Role of the user must be defined.")]
+//        [BsonElement("role")]
+//        public Role Role { get; set; }
+
+//        [BsonRepresentation(BsonType.ObjectId)]
+//        [BsonElement("createdBy")]
+//        [Required(ErrorMessage = "Created by is required.")]
+//        public string CreatedBy { get; set; } = string.Empty;
+
+//        [BsonElement("departmentId")]
+//        [BsonRepresentation(BsonType.ObjectId)]
+//        public string DepartmentId { get; set; } = string.Empty;
+
+//        [StringLength(35, MinimumLength = 3, ErrorMessage = "Business Name must be between 3 to 35 characters.")]
+//        [BsonElement("bussinessName")]
+//        [Required(ErrorMessage = "Business Name is required.")]
+//        public string BussinessName { get; set; } = string.Empty;
+
+//        [BsonElement("updatedAt")]
+//        public DateTime UpdatedAt { get; set; }
+
+//        [BsonElement("refreshToken")]
+//        public string RefreshToken { get; set; } = string.Empty;
+
+//        [BsonElement("deactivatedBy")]
+//        [BsonRepresentation(BsonType.ObjectId)]
+//        public string DeactivatedBy { get; set; } = string.Empty;
+
+//        [BsonElement("status")]
+//        public UserStatus Status { get; set; }
+
+//        [BsonElement("otp")]
+//        public string Otp { get; set; } = string.Empty;
+
+//        [BsonElement("otpExpiry")]
+//        public DateTime OtpExpiry { get; set; }
+//        //public string Password { get; internal set; } = string.Empty;
+//        //public string Phone { get; internal set; } = String.Empty;
+//    }
+
+//    public enum Role
+//    {
+//        Admin,
+//        SubAdmin,
+//        Approver,
+//        Submitter
+//    }
+
+//    public enum UserStatus
+//    {
+//        Active,
+//        Inactive
+//    }
+//}
 
 
 
-using Microsoft.AspNetCore.Identity;
+
+
+//as using AspNetCore.Identity.MOngoDbCore so do this : 
+
+
+using AspNetCore.Identity.MongoDbCore.Models;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
+using MongoDbGenericRepository.Attributes;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace ExpenseTrackerBussiness.Server.Models
 {
-    public class User : IdentityUser
-    {
-        [BsonId]
-        [BsonRepresentation(BsonType.ObjectId)]
-        public override string Id { get; set; } = string.Empty;
+    // Inherit from IdentityUser<ObjectId> (Mongo best practice, avoids string hacks)
 
+    [CollectionName("Users")]
+    public class User : MongoIdentityUser<ObjectId>
+    {
         [Required(ErrorMessage = "Name is required.")]
         [StringLength(30, MinimumLength = 3, ErrorMessage = "Name must be between 3 to 30 characters.")]
         [BsonElement("name")]
         public string Name { get; set; } = string.Empty;
 
-        [Required(ErrorMessage = "Phone number is required.")]
-        [Phone(ErrorMessage = "Invalid Phone no format.")]
-        [BsonElement("phoneNo")]
+        // PhoneNumber already exists in IdentityUser
+        // Just add validation if you want it enforced
+        [Phone(ErrorMessage = "Invalid phone number format.")]
         public override string PhoneNumber { get; set; } = string.Empty;
 
-        [Required(ErrorMessage = "Role of the user must be defined.")]
-        [BsonElement("role")]
-        public Role Role { get; set; }
+        [Required(ErrorMessage = "Business Name is required.")]
+        [StringLength(35, MinimumLength = 3, ErrorMessage = "Business Name must be between 3 to 35 characters.")]
+        [BsonElement("businessName")]
+        public string BusinessName { get; set; } = string.Empty;
 
         [BsonRepresentation(BsonType.ObjectId)]
         [BsonElement("createdBy")]
-        [Required(ErrorMessage = "Created by is required.")]
-        public string CreatedBy { get; set; } = string.Empty;
+        public string? CreatedBy { get; set; }
 
-        [BsonElement("departmentId")]
         [BsonRepresentation(BsonType.ObjectId)]
-        public string DepartmentId { get; set; } = string.Empty;
-
-        [StringLength(35, MinimumLength = 3, ErrorMessage = "Business Name must be between 3 to 35 characters.")]
-        [BsonElement("bussinessName")]
-        [Required(ErrorMessage = "Business Name is required.")]
-        public string BussinessName { get; set; } = string.Empty;
+        [BsonElement("departmentId")]
+        public string? DepartmentId { get; set; }
 
         [BsonElement("updatedAt")]
-        public DateTime UpdatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 
         [BsonElement("refreshToken")]
         public string RefreshToken { get; set; } = string.Empty;
 
         [BsonElement("deactivatedBy")]
         [BsonRepresentation(BsonType.ObjectId)]
-        public string DeactivatedBy { get; set; } = string.Empty;
+        public string? DeactivatedBy { get; set; }
 
         [BsonElement("status")]
-        public UserStatus Status { get; set; }
+        public UserStatus Status { get; set; } = UserStatus.Active;
 
         [BsonElement("otp")]
-        public string Otp { get; set; } = string.Empty;
+        public string? Otp { get; set; }
 
         [BsonElement("otpExpiry")]
-        public DateTime OtpExpiry { get; set; }
+        public DateTime? OtpExpiry { get; set; }
     }
 
-    public enum Role
-    {
-        Admin,
-        SubAdmin,
-        Approver,
-        Submitter
-    }
-
+    // Let Identity handle roles via RoleManager
+    // This enum is optional, if you want "fixed" roles
     public enum UserStatus
     {
         Active,
         Inactive
     }
 }
-
-
-
